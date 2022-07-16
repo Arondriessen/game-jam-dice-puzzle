@@ -124,6 +124,7 @@ function setup() {
     }
 
     updateUnlockedLevel();
+    updatePreviewCube();
 
     loaded = 1;
     openLevel(level);
@@ -347,6 +348,7 @@ function mouseClicked() {
     moves--;
 
     updateMovesText();
+    updatePreviewCube();
 
     // If moving to target, set target to solved
 
@@ -481,7 +483,6 @@ function rollTempCube(dir, num) {
 
 
 
-
 function drawDiceFace(face, x, y, size, outline) {
 
   //fill(0);
@@ -545,6 +546,44 @@ function drawDiceFace(face, x, y, size, outline) {
 
   noStroke();
   noFill();
+}
+
+
+
+function updatePreviewCube() {
+
+  let faceIDsArray = [
+    'top-face',
+    'bottom-face',
+    'left-face',
+    'right-face',
+    'front-face',
+    'back-face'
+  ];
+
+  let faceNumsArray = [
+    cubeTopNum,
+    cubeBottomNum,
+    cubeLeftNum,
+    cubeRightNum,
+    cubeFrontNum,
+    cubeBackNum
+  ];
+
+  for (let i = 0; i < 6; i++) {
+
+    let face = document.getElementById(faceIDsArray[i]);
+    let faceChildren = face.children;
+
+    for (let y = 0; y < 6; y++) {
+
+      console.log(i + " - " + y);
+      console.log(faceChildren[y]);
+      faceChildren[y].style.visibility = 'hidden';
+    }
+
+    face.querySelector('.face-' + faceNumsArray[i]).style.visibility = 'visible';
+  }
 }
 
 

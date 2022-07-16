@@ -1,5 +1,5 @@
 <!DOCTYPE html><!--  This site was created in Webflow. https://www.webflow.com  -->
-<!--  Last Published: Sat Jul 16 2022 19:13:31 GMT+0000 (Coordinated Universal Time)  -->
+<!--  Last Published: Sat Jul 16 2022 22:35:40 GMT+0000 (Coordinated Universal Time)  -->
 <html data-wf-page="62d2ae8eaa648f4e46ff460c" data-wf-site="62d2ae8eaa648f9b9cff460b">
 <head>
   <meta charset="utf-8">
@@ -62,22 +62,25 @@
     </div>
     <div id="game-wrap" class="game-wrap">
       <div class="top-bar-wrap">
+        <div id="back-to-menu-button" data-w-id="c158a9de-52b0-7148-137f-b31b7b0771e0" class="menu-button float-left">
+          <div>&gt; Menu &lt;</div>
+        </div>
         <div class="top-bar-item">
           <div>Level <span id="level-text">1</span></div>
         </div>
         <div class="top-bar-item">
           <div>Moves Left: <span id="moves-left-text">0</span></div>
         </div>
+        <div id="restart-button" class="menu-button float-right">
+          <div>&gt; Restart &lt;</div>
+        </div>
+      </div>
+      <div class="next-level-wrap">
+        <div id="next-level-button" class="menu-button">
+          <div>&gt; Next &lt;</div>
+        </div>
       </div>
       <div class="sidebar-wrap">
-        <div class="game-options-wrap">
-          <div id="back-to-menu-button" data-w-id="c158a9de-52b0-7148-137f-b31b7b0771e0" class="menu-button">
-            <div>&gt; Menu &lt;</div>
-          </div>
-          <div id="restart-button" class="menu-button">
-            <div>&gt; Restart &lt;</div>
-          </div>
-        </div>
         <div class="cube-unwrapped">
           <div class="uw-tile mid-tile">
             <div id="uw-back" class="uw-text">2</div>
@@ -98,9 +101,14 @@
             <div id="uw-bottom" class="uw-text">6</div>
           </div>
         </div>
-        <div class="next-level-wrap">
-          <div id="next-level-button" class="menu-button">
-            <div>&gt; Next &lt;</div>
+        <div data-w-id="30e8aab3-a529-2e42-d95b-8f0febcadfcf" class="_3d-parent">
+          <div class="_3d-cube">
+            <div id="bottom-face" class="_3d-cube-side bottom"><img src="images/dice-face-1.png" loading="lazy" alt="" class="dice-face-img face-1"><img src="images/dice-face-2.png" loading="lazy" alt="" class="dice-face-img face-2"><img src="images/dice-face-3.png" loading="lazy" alt="" class="dice-face-img face-3"><img src="images/dice-face-4.png" loading="lazy" alt="" class="dice-face-img face-4"><img src="images/dice-face-5.png" loading="lazy" alt="" class="dice-face-img face-5"><img src="images/dice-face-6.png" loading="lazy" alt="" class="dice-face-img face-6"></div>
+            <div id="top-face" class="_3d-cube-side top"><img src="images/dice-face-1.png" loading="lazy" alt="" class="dice-face-img face-1"><img src="images/dice-face-2.png" loading="lazy" alt="" class="dice-face-img face-2"><img src="images/dice-face-3.png" loading="lazy" alt="" class="dice-face-img face-3"><img src="images/dice-face-4.png" loading="lazy" alt="" class="dice-face-img face-4"><img src="images/dice-face-5.png" loading="lazy" alt="" class="dice-face-img face-5"><img src="images/dice-face-6.png" loading="lazy" alt="" class="dice-face-img face-6"></div>
+            <div id="left-face" class="_3d-cube-side left"><img src="images/dice-face-1.png" loading="lazy" alt="" class="dice-face-img face-1"><img src="images/dice-face-2.png" loading="lazy" alt="" class="dice-face-img face-2"><img src="images/dice-face-3.png" loading="lazy" alt="" class="dice-face-img face-3"><img src="images/dice-face-4.png" loading="lazy" alt="" class="dice-face-img face-4"><img src="images/dice-face-5.png" loading="lazy" alt="" class="dice-face-img face-5"><img src="images/dice-face-6.png" loading="lazy" alt="" class="dice-face-img face-6"></div>
+            <div id="right-face" class="_3d-cube-side right"><img src="images/dice-face-1.png" loading="lazy" alt="" class="dice-face-img face-1"><img src="images/dice-face-2.png" loading="lazy" alt="" class="dice-face-img face-2"><img src="images/dice-face-3.png" loading="lazy" alt="" class="dice-face-img face-3"><img src="images/dice-face-4.png" loading="lazy" alt="" class="dice-face-img face-4"><img src="images/dice-face-5.png" loading="lazy" alt="" class="dice-face-img face-5"><img src="images/dice-face-6.png" loading="lazy" alt="" class="dice-face-img face-6"></div>
+            <div id="back-face" class="_3d-cube-side back"><img src="images/dice-face-1.png" loading="lazy" alt="" class="dice-face-img face-1"><img src="images/dice-face-2.png" loading="lazy" alt="" class="dice-face-img face-2"><img src="images/dice-face-3.png" loading="lazy" alt="" class="dice-face-img face-3"><img src="images/dice-face-4.png" loading="lazy" alt="" class="dice-face-img face-4"><img src="images/dice-face-5.png" loading="lazy" alt="" class="dice-face-img face-5"><img src="images/dice-face-6.png" loading="lazy" alt="" class="dice-face-img face-6"></div>
+            <div id="front-face" class="_3d-cube-side front"><img src="images/dice-face-1.png" loading="lazy" alt="" class="dice-face-img face-1"><img src="images/dice-face-2.png" loading="lazy" alt="" class="dice-face-img face-2"><img src="images/dice-face-3.png" loading="lazy" alt="" class="dice-face-img face-3"><img src="images/dice-face-4.png" loading="lazy" alt="" class="dice-face-img face-4"><img src="images/dice-face-5.png" loading="lazy" alt="" class="dice-face-img face-5"><img src="images/dice-face-6.png" loading="lazy" alt="" class="dice-face-img face-6"></div>
           </div>
         </div>
       </div>
