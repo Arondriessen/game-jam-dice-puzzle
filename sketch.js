@@ -6,7 +6,7 @@ gameState = 0;
 loaded = 0;
 
 level = 1;
-unlockedLevel = 1;
+unlockedLevel = 4;
 
 playerPos = [0, 0];
 mousePos = [0, 0];
@@ -40,6 +40,7 @@ function setup() {
 
   // Canvas Setup
 
+  var parentDiv = document.getElementById('game-wrap');
   var myCanvas = createCanvas(windowWidth - 10, windowHeight - 10);
   myCanvas.parent("game-wrap");
 
@@ -123,6 +124,7 @@ function setup() {
     }
 
     updateUnlockedLevel();
+    updatePreviewCube();
 
     loaded = 1;
     openLevel(level);
@@ -308,7 +310,8 @@ function draw() {
       // Draw cube num
 
       fill(0);
-      text(cubeTopNum, gridStartX + (playerPos[0] * tileSize) + (tileSize / 2), gridStartY + (playerPos[1] * tileSize) + (tileSize / 2));
+      //text(cubeTopNum, gridStartX + (playerPos[0] * tileSize) + (tileSize / 2), gridStartY + (playerPos[1] * tileSize) + (tileSize / 2));
+      drawDiceFace(cubeTopNum, gridStartX + (playerPos[0] * tileSize) + (tileSize / 2), gridStartY + (playerPos[1] * tileSize) + (tileSize / 2), tileSize, 0);
 
 
       // Draw target numbers
@@ -322,8 +325,7 @@ function draw() {
 
         fill(255);
         if (targets[i][3]) { fill(0, 255, 0); }
-
-        text(targets[i][2], gridStartX + (targets[i][0] * tileSize) + (tileSize / 2), gridStartY + (targets[i][1] * tileSize) + (tileSize / 2));
+        drawDiceFace(targets[i][2], gridStartX + (targets[i][0] * tileSize) + (tileSize / 2), gridStartY + (targets[i][1] * tileSize) + (tileSize / 2), tileSize, 1);
       }
     }
   }
@@ -346,6 +348,7 @@ function mouseClicked() {
     moves--;
 
     updateMovesText();
+    updatePreviewCube();
 
     // If moving to target, set target to solved
 
@@ -369,9 +372,12 @@ function mouseClicked() {
 
           // Set next level button to visible
 
-          nextLevelButton.style.visibility = 'visible';
-          unlockedLevel = (level + 1);
-          updateUnlockedLevel();
+          if ((level + 1) <= levelData.length) {
+
+            nextLevelButton.style.visibility = 'visible';
+            unlockedLevel = (level + 1);
+            updateUnlockedLevel();
+          }
         }
       }
     }
@@ -472,6 +478,111 @@ function rollTempCube(dir, num) {
         rollDown();
         break;
     }
+  }
+}
+
+
+
+function drawDiceFace(face, x, y, size, outline) {
+
+  //fill(0);
+  //noStroke();
+
+  if (outline) {
+
+    //fill(255);
+    //noFill();
+    //stroke(255);
+    //strokeWeight(4);
+  }
+
+  let cX = x;
+  let cY = y;
+
+  let cS = max(14, size / 12);
+  let cOff = size / 4.2;
+
+  switch(face) {
+
+    case 1:
+      circle(cX, cY, cS);
+      break;
+
+    case 2:
+      circle(cX - cOff, cY - cOff, cS);
+      circle(cX + cOff, cY + cOff, cS);
+      break;
+
+    case 3:
+      circle(cX - cOff, cY - cOff, cS);
+      circle(cX, cY, cS);
+      circle(cX + cOff, cY + cOff, cS);
+      break;
+
+    case 4:
+      circle(cX - cOff, cY - cOff, cS);
+      circle(cX - cOff, cY + cOff, cS);
+      circle(cX + cOff, cY + cOff, cS);
+      circle(cX + cOff, cY - cOff, cS);
+      break;
+
+    case 5:
+      circle(cX - cOff, cY - cOff, cS);
+      circle(cX - cOff, cY + cOff, cS);
+      circle(cX + cOff, cY + cOff, cS);
+      circle(cX + cOff, cY - cOff, cS);
+      circle(cX, cY, cS);
+      break;
+
+    case 6:
+      circle(cX - cOff, cY - cOff, cS);
+      circle(cX - cOff, cY + cOff, cS);
+      circle(cX + cOff, cY + cOff, cS);
+      circle(cX + cOff, cY - cOff, cS);
+      circle(cX - cOff, cY, cS);
+      circle(cX + cOff, cY, cS);
+      break;
+  }
+
+  noStroke();
+  noFill();
+}
+
+
+
+function updatePreviewCube() {
+
+  let faceIDsArray = [
+    'top-face',
+    'bottom-face',
+    'left-face',
+    'right-face',
+    'front-face',
+    'back-face'
+  ];
+
+  let faceNumsArray = [
+    cubeTopNum,
+    cubeBottomNum,
+    cubeLeftNum,
+    cubeRightNum,
+    cubeFrontNum,
+    cubeBackNum
+  ];
+
+  for (let i = 0; i < 6; i++) {
+
+    let face = document.getElementById(faceIDsArray[i]);
+    let faceChildren = face.children;
+
+    for (let y = 0; y < 6; y++) {
+
+      console.log(i + " - " + y);
+      console.log(faceChildren[y]);
+      faceChildren[y].style.visibility = 'hidden';
+    }
+
+    face.querySelector('.face-' + faceNumsArray[i]).style.visibility = 'visible';
   }
 }
 
