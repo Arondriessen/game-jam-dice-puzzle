@@ -6,6 +6,7 @@ gameState = 0;
 loaded = 0;
 
 level = 1;
+unlockedLevel = 1;
 
 playerPos = [0, 0];
 mousePos = [0, 0];
@@ -39,14 +40,14 @@ function setup() {
 
   // Canvas Setup
 
-  var myCanvas = createCanvas(windowWidth - 5, windowHeight - 5);
+  var myCanvas = createCanvas(windowWidth - 10, windowHeight - 10);
   myCanvas.parent("game-wrap");
 
   // Basic Game Setup
 
   playAreaSize = min(width, height) - 300;
-  playAreaStartX = (width - playAreaSize) / 2;
-  playAreaStartY = (height - playAreaSize) / 2;
+  playAreaStartX = ((width - playAreaSize) / 2) - 200;
+  playAreaStartY = ((height - playAreaSize) / 2) + 60;
 
 
   // Load level data from js file
@@ -57,7 +58,19 @@ function setup() {
 
     levelData = levels.slice();
 
-    openLevel(level);
+    // Save references to unwrapped cube numbers
+
+    uwTop = document.getElementById('uw-top');
+    uwBack = document.getElementById('uw-back');
+    uwFront = document.getElementById('uw-front');
+    uwBottom = document.getElementById('uw-bottom');
+    uwLeft = document.getElementById('uw-left');
+    uwRight = document.getElementById('uw-right');
+
+    // Save references to top bar texts
+
+    levelText = document.getElementById('level-text');
+    movesText = document.getElementById('moves-left-text');
 
     // Attach level open function to play button
 
@@ -96,23 +109,46 @@ function setup() {
 
     // Attach level open functions to level buttons
 
-    let levelButtons = document.getElementsByClassName("menu-button level-button");
+    levelButtons = document.getElementsByClassName("menu-button level-button");
 
     for (let i = 0; i < levelButtons.length; i++) {
 
+      levelButtons[i].style.visibility = 'hidden';
       levelButtons[i].addEventListener("click", event => {
 
         gameState = 1;
         let fuckoff = levelButtons[i].id.substr(this.id.length - 1);
-        openLevel(fuckoff);
+        openLevel(parseInt(fuckoff));
       });
     }
 
+    updateUnlockedLevel();
+
     loaded = 1;
+    openLevel(level);
   }
 
   script.src = 'levels.js';
   document.head.appendChild(script);
+}
+
+
+
+function windowResized() {
+
+  resizeCanvas(windowWidth - 10, windowHeight - 10);
+
+  playAreaSize = min(width, height) - 300;
+  playAreaStartX = ((width - playAreaSize) / 2) - 200;
+  playAreaStartY = ((height - playAreaSize) / 2) + 60;
+
+  if (gameState) {
+
+    tileSize = playAreaSize / gridResMax;
+
+    gridStartX = playAreaStartX + (((gridResMax - gridRes[0]) / 2) * tileSize);
+    gridStartY = playAreaStartY + (((gridResMax - gridRes[1]) / 2) * tileSize);
+  }
 }
 
 
@@ -289,12 +325,6 @@ function draw() {
 
         text(targets[i][2], gridStartX + (targets[i][0] * tileSize) + (tileSize / 2), gridStartY + (targets[i][1] * tileSize) + (tileSize / 2));
       }
-
-
-      // Draw number of moves left
-
-      fill(255);
-      text("Moves Left: " + moves, width / 2, 75);
     }
   }
 }
@@ -314,6 +344,8 @@ function mouseClicked() {
     playerPos[0] = mousePos[0];
     playerPos[1] = mousePos[1];
     moves--;
+
+    updateMovesText();
 
     // If moving to target, set target to solved
 
@@ -338,6 +370,8 @@ function mouseClicked() {
           // Set next level button to visible
 
           nextLevelButton.style.visibility = 'visible';
+          unlockedLevel = (level + 1);
+          updateUnlockedLevel();
         }
       }
     }
@@ -365,7 +399,7 @@ function openLevel(num) {
   moves = levelData[level - 1][1];
   gridRes = levelData[level - 1][2];
 
-  let gridResMax = max(gridRes[0], gridRes[1]);
+  gridResMax = max(gridRes[0], gridRes[1]);
 
   tileSize = playAreaSize / gridResMax;
 
@@ -386,13 +420,14 @@ function openLevel(num) {
   levelSolved = 0;
   targetsSolved = 0;
 
-
   cubeTopNum = 1;
   cubeBottomNum = 6;
   cubeLeftNum = 4;
   cubeRightNum = 3;
   cubeBackNum = 2;
   cubeFrontNum = 5;
+
+  updateMovesText();
 }
 
 
@@ -437,6 +472,33 @@ function rollTempCube(dir, num) {
         rollDown();
         break;
     }
+  }
+}
+
+
+
+function updateMovesText() {
+
+  // Update uw numbers
+
+  uwTop.innerHTML = cubeTopNum;
+  uwBottom.innerHTML = cubeBottomNum;
+  uwBack.innerHTML = cubeBackNum;
+  uwFront.innerHTML = cubeFrontNum;
+  uwLeft.innerHTML = cubeLeftNum;
+  uwRight.innerHTML = cubeRightNum;
+
+  levelText.innerHTML = level;
+  movesText.innerHTML = moves;
+}
+
+
+
+function updateUnlockedLevel() {
+
+  for (let i = 0; i < unlockedLevel; i++) {
+
+    levelButtons[i].style.visibility = "visible";
   }
 }
 
