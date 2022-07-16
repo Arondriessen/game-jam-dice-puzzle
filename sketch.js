@@ -3,9 +3,9 @@
 // Basic Variables
 
 gameState = 0;
+loaded = 0;
 
 level = 1;
-moves = 0;
 
 playerPos = [0, 0];
 mousePos = [0, 0];
@@ -13,6 +13,11 @@ prevMousePos = [0, 0];
 canMove = 0;
 onTarget = 0;
 selectedTarget = 0;
+gridTileStates = [];
+levelSolved = 0;
+targetsSolved = 0;
+moves = 0;
+
 
 cubeTopNum = 1;
 cubeBottomNum = 6;
@@ -39,9 +44,9 @@ function setup() {
 
   // Basic Game Setup
 
-  playAreaSize = min(width, height) - 200;
-  gridStartX = (width - playAreaSize) / 2;
-  gridStartY = (height - playAreaSize) / 2;
+  playAreaSize = min(width, height) - 300;
+  playAreaStartX = (width - playAreaSize) / 2;
+  playAreaStartY = (height - playAreaSize) / 2;
 
 
   // Load level data from js file
@@ -67,6 +72,26 @@ function setup() {
     document.getElementById('back-to-menu-button').addEventListener("click", event => {
 
       gameState = 0;
+      nextLevelButton.style.visibility = 'hidden';
+    });
+
+    // Attach function to restart button
+
+    document.getElementById('restart-button').addEventListener("click", event => {
+
+      openLevel(level);
+      nextLevelButton.style.visibility = 'hidden';
+    });
+
+    // Attach function to next level button
+
+    nextLevelButton = document.getElementById('next-level-button');
+    nextLevelButton.style.visibility = 'hidden';
+    nextLevelButton.addEventListener("click", event => {
+
+      level++;
+      openLevel(level);
+      nextLevelButton.style.visibility = 'hidden';
     });
 
     // Attach level open functions to level buttons
@@ -82,6 +107,8 @@ function setup() {
         openLevel(fuckoff);
       });
     }
+
+    loaded = 1;
   }
 
   script.src = 'levels.js';
@@ -94,148 +121,181 @@ function draw() {
 
   // Only do anything if the script container div is open
 
-  if (gameState) {
+  if (loaded) {
 
-    background(0);
+    if (gameState) {
+
+      background(0);
 
 
-    // Update mouse pos
+      // Update mouse pos
 
-    if (mouseX > gridStartX) {
+      if (mouseX > gridStartX) {
 
-      if (mouseX < (gridStartX + (gridRes * tileSize))) {
+        if (mouseX < (gridStartX + (gridRes[0] * tileSize))) {
 
-        if (mouseY > gridStartY) {
+          if (mouseY > gridStartY) {
 
-          if (mouseY < (gridStartY + (gridRes * tileSize))) {
+            if (mouseY < (gridStartY + (gridRes[1] * tileSize))) {
 
-            prevMousePos[0] = mousePos[0];
-            prevMousePos[1] = mousePos[1];
-            mousePos[0] = floor((mouseX - gridStartX) / tileSize);
-            mousePos[1] = floor((mouseY - gridStartY) / tileSize);
+              prevMousePos[0] = mousePos[0];
+              prevMousePos[1] = mousePos[1];
+              mousePos[0] = floor((mouseX - gridStartX) / tileSize);
+              mousePos[1] = floor((mouseY - gridStartY) / tileSize);
+            }
           }
         }
       }
-    }
 
-    // Check if mouse state needs updating
+      // Check if mouse state needs updating
 
-    if ((mousePos[0] != prevMousePos[0]) || (mousePos[1] != prevMousePos[1])) {
+      if ((mousePos[0] != prevMousePos[0]) || (mousePos[1] != prevMousePos[1])) {
 
-      // Can we move?
-      // Set state to "cannot move" by default before checking
+        // Can we move?
+        // Set state to "cannot move" by default before checking
 
-      canMove = 0;
+        canMove = 0;
 
-      // Are we along the x or y axis of the player?
+        // Do we have any moves left?
 
-      if ((mousePos[0] == playerPos[0]) || (mousePos[1] == playerPos[1])) {
+        if (moves > 0) {
 
-        // If we are clamp selected tile to within 1 tile distance from player
+          // Are we on an enabled tile?
 
-        mousePos[0] = playerPos[0] + max(min(mousePos[0] - playerPos[0], 1), -1);
-        mousePos[1] = playerPos[1] + max(min(mousePos[1] - playerPos[1], 1), -1);
+          if (gridTileStates[mousePos[1]][mousePos[0]]) {
 
-        // Make sure mouse is not ON the player
+            // Are we along the x or y axis of the player?
 
-        if ((mousePos[0] != playerPos[0]) || (mousePos[1] != playerPos[1])) {
+            if ((mousePos[0] == playerPos[0]) || (mousePos[1] == playerPos[1])) {
 
-          // If we aren't set state to "can move"
+              // If we are clamp selected tile to within 1 tile distance from player
 
-          canMove = 1;
-        }
+              mousePos[0] = playerPos[0] + max(min(mousePos[0] - playerPos[0], 1), -1);
+              mousePos[1] = playerPos[1] + max(min(mousePos[1] - playerPos[1], 1), -1);
 
-        // Set move direction and distance
+              // Make sure mouse is not ON the player
 
-        if (mousePos[0] > playerPos[0]) { moveDir = 1; moveDist = 1; }
-        if (mousePos[0] < playerPos[0]) { moveDir = 0; moveDist = 1; }
-        if (mousePos[1] > playerPos[1]) { moveDir = 3; moveDist = 1; }
-        if (mousePos[1] < playerPos[1]) { moveDir = 2; moveDist = 1; }
+              if ((mousePos[0] != playerPos[0]) || (mousePos[1] != playerPos[1])) {
 
-        // Is the mouse on a target number?
-        // Set to no by default before checking
+                // If we aren't set state to "can move"
 
-        onTarget = 0;
+                canMove = 1;
+              }
 
-        for (let i = 0; i < targets.length; i++) {
+              // Set move direction and distance
 
-          if ((mousePos[0] == targets[i][0]) && (mousePos[1] == targets[i][1])) {
+              if (mousePos[0] > playerPos[0]) { moveDir = 1; moveDist = 1; }
+              if (mousePos[0] < playerPos[0]) { moveDir = 0; moveDist = 1; }
+              if (mousePos[1] > playerPos[1]) { moveDir = 3; moveDist = 1; }
+              if (mousePos[1] < playerPos[1]) { moveDir = 2; moveDist = 1; }
 
-            onTarget = 1;
-            selectedTarget = i;
+              // Is the mouse on a target number?
+              // Set to no by default before checking
 
-            // Calculate movement outcome numbers
-            // Can we land of the target number? (will it match the top number?)
-            // Is it not already solved (can't move to it then)
+              onTarget = 0;
 
-            rollTempCube(moveDir, moveDist);
+              for (let i = 0; i < targets.length; i++) {
 
-            if (targets[i][2] != tempTopNum) { canMove = 0; }
-            if (targets[i][3]) { canMove = 0; }
+                if ((mousePos[0] == targets[i][0]) && (mousePos[1] == targets[i][1])) {
 
-            break;
+                  onTarget = 1;
+                  selectedTarget = i;
+
+                  // Calculate movement outcome numbers
+                  // Can we land of the target number? (will it match the top number?)
+                  // Is it not already solved (can't move to it then)
+
+                  rollTempCube(moveDir, moveDist);
+
+                  if (targets[i][2] != tempTopNum) { canMove = 0; }
+                  if (targets[i][3]) { canMove = 0; }
+
+                  break;
+                }
+              }
+            }
           }
         }
       }
-    }
 
 
-    // Draw Grid Square Background
+      // Draw Grid Square Background
 
-    fill(0);
-    square(gridStartX, gridStartY, playAreaSize);
-
-
-    // Draw mouse pos
-
-    fill(255, 0, 0);
-    if (canMove == 1) { fill(0, 255, 0); }
-    noStroke();
-    square(gridStartX + (mousePos[0] * tileSize), gridStartY + (mousePos[1] * tileSize), tileSize);
+      fill(0);
+      square(gridStartX, gridStartY, playAreaSize);
 
 
-    // Draw Player
+      // Draw mouse pos
 
-    fill(255);
-    noStroke();
-    square(gridStartX + (playerPos[0] * tileSize), gridStartY + (playerPos[1] * tileSize), tileSize);
+      if (gridTileStates[mousePos[1]][mousePos[0]]) {
 
-
-    // Draw Grid Tiles
-
-    noFill();
-    stroke(255);
-    strokeWeight(4);
-
-    for (let i = 0; i < gridRes; i++) {
-
-      for (let y = 0; y < gridRes; y++) {
-
-        square(gridStartX + (i * tileSize), gridStartY + (y * tileSize), tileSize);
+        fill(255, 0, 0);
+        if (canMove == 1) { fill(0, 255, 0); }
+        noStroke();
+        square(gridStartX + (mousePos[0] * tileSize), gridStartY + (mousePos[1] * tileSize), tileSize);
       }
-    }
 
 
-    // Draw target numbers
+      // Draw Player
+
+      fill(255);
+      noStroke();
+      square(gridStartX + (playerPos[0] * tileSize), gridStartY + (playerPos[1] * tileSize), tileSize);
+
+
+      // Draw Grid Tiles
+
+      noFill();
+      stroke(255);
+      strokeWeight(4);
+
+      for (let y = 0; y < gridRes[1]; y++) {
+
+        for (let x = 0; x < gridRes[0]; x++) {
+
+          //console.log(gridTileStates);
+
+          if (gridTileStates[y][x]) {
+
+            noFill();
+            square(gridStartX + (x * tileSize), gridStartY + (y * tileSize), tileSize);
+
+          } else {
+
+            //fill(50);
+            //square(gridStartX + (x * tileSize), gridStartY + (y * tileSize), tileSize);
+          }
+        }
+      }
+
+
+      // Draw cube num
+
+      fill(0);
+      text(cubeTopNum, gridStartX + (playerPos[0] * tileSize) + (tileSize / 2), gridStartY + (playerPos[1] * tileSize) + (tileSize / 2));
+
+
+      // Draw target numbers
 
       textAlign(CENTER, CENTER);
       textSize(36);
       fill(255);
       noStroke();
 
-    for (let i = 0; i < targets.length; i++) {
+      for (let i = 0; i < targets.length; i++) {
+
+        fill(255);
+        if (targets[i][3]) { fill(0, 255, 0); }
+
+        text(targets[i][2], gridStartX + (targets[i][0] * tileSize) + (tileSize / 2), gridStartY + (targets[i][1] * tileSize) + (tileSize / 2));
+      }
+
+
+      // Draw number of moves left
 
       fill(255);
-      if (targets[i][3]) { fill(0, 255, 0); }
-
-      text(targets[i][2], gridStartX + (targets[i][0] * tileSize) + (tileSize / 2), gridStartY + (targets[i][1] * tileSize) + (tileSize / 2));
+      text("Moves Left: " + moves, width / 2, 75);
     }
-
-
-    // Draw cube num
-
-    fill(0);
-    text(cubeTopNum, gridStartX + (playerPos[0] * tileSize) + (tileSize / 2), gridStartY + (playerPos[1] * tileSize) + (tileSize / 2));
   }
 }
 
@@ -253,6 +313,7 @@ function mouseClicked() {
 
     playerPos[0] = mousePos[0];
     playerPos[1] = mousePos[1];
+    moves--;
 
     // If moving to target, set target to solved
 
@@ -262,7 +323,22 @@ function mouseClicked() {
 
       if (targets[selectedTarget][3] == 0) {
 
+        // Set target to solved
+
         targets[selectedTarget][3] = 1;
+
+        // Check level progress
+
+        targetsSolved++;
+
+        if (targetsSolved == targets.length) {
+
+          // Level is solved
+
+          // Set next level button to visible
+
+          nextLevelButton.style.visibility = 'visible';
+        }
       }
     }
 
@@ -278,8 +354,7 @@ function openLevel(num) {
 
   level = num;
 
-  playerPos
-
+  playerPos = levelData[level - 1][4].slice();
   targets = levelData[level - 1][0].slice();
 
   for (let i = 0; i < targets.length; i++) {
@@ -289,16 +364,28 @@ function openLevel(num) {
 
   moves = levelData[level - 1][1];
   gridRes = levelData[level - 1][2];
-  tileSize = playAreaSize / gridRes;
+
+  let gridResMax = max(gridRes[0], gridRes[1]);
+
+  tileSize = playAreaSize / gridResMax;
+
+  gridStartX = playAreaStartX + (((gridResMax - gridRes[0]) / 2) * tileSize);
+  gridStartY = playAreaStartY + (((gridResMax - gridRes[1]) / 2) * tileSize);
+
+  // Set grid tile states
+
+  gridTileStates = levelData[level - 1][3];
 
   // Defaults
 
-  playerPos = [0, 0];
   mousePos = [0, 0];
   prevMousePos = [0, 0];
   canMove = 0;
   onTarget = 0;
   selectedTarget = 0;
+  levelSolved = 0;
+  targetsSolved = 0;
+
 
   cubeTopNum = 1;
   cubeBottomNum = 6;
