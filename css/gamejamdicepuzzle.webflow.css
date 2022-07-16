@@ -15,7 +15,6 @@
   max-width: 1224px;
   margin-right: auto;
   margin-left: auto;
-  padding: 10% 6%;
   -webkit-box-align: center;
   -webkit-align-items: center;
   -ms-flex-align: center;
@@ -27,6 +26,10 @@
   color: #fff;
   font-size: 60px;
   line-height: 80px;
+}
+
+.h1.center-align {
+  text-align: center;
 }
 
 .menu-button {
@@ -64,6 +67,10 @@
   right: auto;
   bottom: auto;
   z-index: 10;
+}
+
+.menu-button.hidden {
+  display: none;
 }
 
 .hero-wrap {
@@ -134,16 +141,16 @@
 }
 
 .level-buttons-wrap {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  margin-right: auto;
-  margin-left: auto;
-  -webkit-box-pack: start;
-  -webkit-justify-content: flex-start;
-  -ms-flex-pack: start;
-  justify-content: flex-start;
+  display: block;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
   -webkit-flex-wrap: wrap;
   -ms-flex-wrap: wrap;
   flex-wrap: wrap;
