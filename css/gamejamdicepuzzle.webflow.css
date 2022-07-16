@@ -1,5 +1,5 @@
 .body {
-  background-color: #000;
+  background-color: #ba9790;
   font-size: 32px;
   line-height: 32px;
 }
@@ -45,19 +45,19 @@
   -ms-flex-pack: center;
   justify-content: center;
   border-style: solid;
-  border-width: 1px;
-  border-color: #fff;
-  -webkit-transition: opacity 200ms ease;
-  transition: opacity 200ms ease;
+  border-width: 4px;
+  border-color: hsla(0, 0%, 100%, 0.3);
+  border-radius: 10px;
+  -webkit-transition: all 200ms ease;
+  transition: all 200ms ease;
   color: #fff;
-  line-height: 36px;
   font-weight: 700;
   cursor: pointer;
 }
 
 .menu-button:hover {
   background-color: #fff;
-  color: #000;
+  color: #ba9790;
 }
 
 .menu-button.abs-float {
@@ -81,7 +81,12 @@
   margin-left: auto;
 }
 
+.menu-button.no-m-left {
+  margin-left: 0px;
+}
+
 .hero-wrap {
+  position: relative;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -392,4 +397,45 @@
   top: 0%;
   right: 0%;
   bottom: 0%;
+}
+
+.made-by-text {
+  position: absolute;
+  left: 0%;
+  top: auto;
+  right: 0%;
+  bottom: 0%;
+  margin-top: 0px;
+  margin-bottom: 40px;
+  opacity: 0.75;
+  color: #fff;
+  font-size: 26px;
+  text-align: center;
+}
+
+.instructions-text {
+  margin-top: 0px;
+  margin-bottom: 30px;
+  opacity: 0.75;
+  color: #fff;
+  font-size: 26px;
+  text-align: center;
+}
+
+.hero-wrap-2 {
+  position: relative;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  height: 100%;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
 }
