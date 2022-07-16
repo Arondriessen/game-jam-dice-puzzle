@@ -29,9 +29,7 @@
 
 .menu-button {
   display: inline-block;
-  margin-top: 20px;
-  margin-right: 20px;
-  margin-left: 20px;
+  margin: 20px;
   padding: 20px 30px;
   border-style: solid;
   border-width: 1px;
@@ -143,4 +141,22 @@
   -webkit-align-content: flex-start;
   -ms-flex-line-pack: start;
   align-content: flex-start;
+}
+
+.game-options-wrap {
+  position: absolute;
+  left: 0%;
+  top: 0%;
+  right: auto;
+  bottom: auto;
+  z-index: 10;
+}
+
+.next-level-wrap {
+  position: absolute;
+  left: auto;
+  top: auto;
+  right: 0%;
+  bottom: 0%;
+  z-index: 10;
 }
