@@ -9,6 +9,12 @@ levels = [ // Levels
     ],
     10, // Number of moves
     4, // Grid Resolution
+    [ // Grid tile states (enabled/disabled for level)
+      [1, 1, 1, 0],
+      [1, 1, 1, 1],
+      [1, 1, 1, 0],
+      [0, 0, 0, 0]
+    ]
   ],
 
   [ // Level 2
@@ -19,6 +25,14 @@ levels = [ // Levels
     ],
     20, // Number of moves
     6, // Grid Resolution
+    [ // Grid tile states (enabled/disabled for level)
+      [1, 1, 1, 1, 1, 1],
+      [1, 1, 1, 1, 1, 1],
+      [1, 1, 1, 1, 1, 1],
+      [1, 1, 1, 1, 1, 1],
+      [1, 1, 1, 1, 1, 1],
+      [1, 1, 1, 1, 1, 1],
+    ]
   ],
 
   [ // Level 3
@@ -29,7 +43,15 @@ levels = [ // Levels
       [4, 3, 4, 0]
     ],
     30, // Number of moves
-    8, // Grid Resolution
+    6, // Grid Resolution
+    [ // Grid tile states (enabled/disabled for level)
+      [1, 1, 1, 1, 1, 1],
+      [1, 1, 1, 1, 1, 1],
+      [1, 1, 1, 1, 1, 1],
+      [1, 1, 1, 1, 1, 1],
+      [1, 1, 1, 1, 1, 1],
+      [1, 1, 1, 1, 1, 1],
+    ]
   ],
 
   [ // Level 4
@@ -40,6 +62,14 @@ levels = [ // Levels
       [4, 3, 4, 0]
     ],
     30, // Number of moves
-    10, // Grid Resolution
+    6, // Grid Resolution
+    [ // Grid tile states (enabled/disabled for level)
+      [1, 1, 1, 1, 1, 1],
+      [1, 1, 1, 1, 1, 1],
+      [1, 1, 1, 1, 1, 1],
+      [1, 1, 1, 1, 1, 1],
+      [1, 1, 1, 1, 1, 1],
+      [1, 1, 1, 1, 1, 1],
+    ]
   ]
 ]

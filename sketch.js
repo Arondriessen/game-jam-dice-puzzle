@@ -3,6 +3,7 @@
 // Basic Variables
 
 gameState = 0;
+loaded = 0;
 
 level = 1;
 moves = 0;
@@ -13,6 +14,7 @@ prevMousePos = [0, 0];
 canMove = 0;
 onTarget = 0;
 selectedTarget = 0;
+gridTileStates = [];
 
 cubeTopNum = 1;
 cubeBottomNum = 6;
@@ -82,6 +84,8 @@ function setup() {
         openLevel(fuckoff);
       });
     }
+
+    loaded = 1;
   }
 
   script.src = 'levels.js';
@@ -94,148 +98,167 @@ function draw() {
 
   // Only do anything if the script container div is open
 
-  if (gameState) {
+  if (loaded) {
 
-    background(0);
+    if (gameState) {
+
+      background(0);
 
 
-    // Update mouse pos
+      // Update mouse pos
 
-    if (mouseX > gridStartX) {
+      if (mouseX > gridStartX) {
 
-      if (mouseX < (gridStartX + (gridRes * tileSize))) {
+        if (mouseX < (gridStartX + (gridRes * tileSize))) {
 
-        if (mouseY > gridStartY) {
+          if (mouseY > gridStartY) {
 
-          if (mouseY < (gridStartY + (gridRes * tileSize))) {
+            if (mouseY < (gridStartY + (gridRes * tileSize))) {
 
-            prevMousePos[0] = mousePos[0];
-            prevMousePos[1] = mousePos[1];
-            mousePos[0] = floor((mouseX - gridStartX) / tileSize);
-            mousePos[1] = floor((mouseY - gridStartY) / tileSize);
+              prevMousePos[0] = mousePos[0];
+              prevMousePos[1] = mousePos[1];
+              mousePos[0] = floor((mouseX - gridStartX) / tileSize);
+              mousePos[1] = floor((mouseY - gridStartY) / tileSize);
+            }
           }
         }
       }
-    }
 
-    // Check if mouse state needs updating
+      // Check if mouse state needs updating
 
-    if ((mousePos[0] != prevMousePos[0]) || (mousePos[1] != prevMousePos[1])) {
+      if ((mousePos[0] != prevMousePos[0]) || (mousePos[1] != prevMousePos[1])) {
 
-      // Can we move?
-      // Set state to "cannot move" by default before checking
+        // Can we move?
+        // Set state to "cannot move" by default before checking
 
-      canMove = 0;
+        canMove = 0;
 
-      // Are we along the x or y axis of the player?
+        // Are we on an enabled tile?
 
-      if ((mousePos[0] == playerPos[0]) || (mousePos[1] == playerPos[1])) {
+        if (gridTileStates[mousePos[1]][mousePos[0]]) {
 
-        // If we are clamp selected tile to within 1 tile distance from player
+          // Are we along the x or y axis of the player?
 
-        mousePos[0] = playerPos[0] + max(min(mousePos[0] - playerPos[0], 1), -1);
-        mousePos[1] = playerPos[1] + max(min(mousePos[1] - playerPos[1], 1), -1);
+          if ((mousePos[0] == playerPos[0]) || (mousePos[1] == playerPos[1])) {
 
-        // Make sure mouse is not ON the player
+            // If we are clamp selected tile to within 1 tile distance from player
 
-        if ((mousePos[0] != playerPos[0]) || (mousePos[1] != playerPos[1])) {
+            mousePos[0] = playerPos[0] + max(min(mousePos[0] - playerPos[0], 1), -1);
+            mousePos[1] = playerPos[1] + max(min(mousePos[1] - playerPos[1], 1), -1);
 
-          // If we aren't set state to "can move"
+            // Make sure mouse is not ON the player
 
-          canMove = 1;
-        }
+            if ((mousePos[0] != playerPos[0]) || (mousePos[1] != playerPos[1])) {
 
-        // Set move direction and distance
+              // If we aren't set state to "can move"
 
-        if (mousePos[0] > playerPos[0]) { moveDir = 1; moveDist = 1; }
-        if (mousePos[0] < playerPos[0]) { moveDir = 0; moveDist = 1; }
-        if (mousePos[1] > playerPos[1]) { moveDir = 3; moveDist = 1; }
-        if (mousePos[1] < playerPos[1]) { moveDir = 2; moveDist = 1; }
+              canMove = 1;
+            }
 
-        // Is the mouse on a target number?
-        // Set to no by default before checking
+            // Set move direction and distance
 
-        onTarget = 0;
+            if (mousePos[0] > playerPos[0]) { moveDir = 1; moveDist = 1; }
+            if (mousePos[0] < playerPos[0]) { moveDir = 0; moveDist = 1; }
+            if (mousePos[1] > playerPos[1]) { moveDir = 3; moveDist = 1; }
+            if (mousePos[1] < playerPos[1]) { moveDir = 2; moveDist = 1; }
 
-        for (let i = 0; i < targets.length; i++) {
+            // Is the mouse on a target number?
+            // Set to no by default before checking
 
-          if ((mousePos[0] == targets[i][0]) && (mousePos[1] == targets[i][1])) {
+            onTarget = 0;
 
-            onTarget = 1;
-            selectedTarget = i;
+            for (let i = 0; i < targets.length; i++) {
 
-            // Calculate movement outcome numbers
-            // Can we land of the target number? (will it match the top number?)
-            // Is it not already solved (can't move to it then)
+              if ((mousePos[0] == targets[i][0]) && (mousePos[1] == targets[i][1])) {
 
-            rollTempCube(moveDir, moveDist);
+                onTarget = 1;
+                selectedTarget = i;
 
-            if (targets[i][2] != tempTopNum) { canMove = 0; }
-            if (targets[i][3]) { canMove = 0; }
+                // Calculate movement outcome numbers
+                // Can we land of the target number? (will it match the top number?)
+                // Is it not already solved (can't move to it then)
 
-            break;
+                rollTempCube(moveDir, moveDist);
+
+                if (targets[i][2] != tempTopNum) { canMove = 0; }
+                if (targets[i][3]) { canMove = 0; }
+
+                break;
+              }
+            }
           }
         }
       }
-    }
 
 
-    // Draw Grid Square Background
+      // Draw Grid Square Background
 
-    fill(0);
-    square(gridStartX, gridStartY, playAreaSize);
-
-
-    // Draw mouse pos
-
-    fill(255, 0, 0);
-    if (canMove == 1) { fill(0, 255, 0); }
-    noStroke();
-    square(gridStartX + (mousePos[0] * tileSize), gridStartY + (mousePos[1] * tileSize), tileSize);
+      fill(0);
+      square(gridStartX, gridStartY, playAreaSize);
 
 
-    // Draw Player
+      // Draw mouse pos
 
-    fill(255);
-    noStroke();
-    square(gridStartX + (playerPos[0] * tileSize), gridStartY + (playerPos[1] * tileSize), tileSize);
+      fill(255, 0, 0);
+      if (canMove == 1) { fill(0, 255, 0); }
+      noStroke();
+      square(gridStartX + (mousePos[0] * tileSize), gridStartY + (mousePos[1] * tileSize), tileSize);
 
 
-    // Draw Grid Tiles
+      // Draw Player
 
-    noFill();
-    stroke(255);
-    strokeWeight(4);
+      fill(255);
+      noStroke();
+      square(gridStartX + (playerPos[0] * tileSize), gridStartY + (playerPos[1] * tileSize), tileSize);
 
-    for (let i = 0; i < gridRes; i++) {
+
+      // Draw Grid Tiles
+
+      noFill();
+      stroke(255);
+      strokeWeight(4);
 
       for (let y = 0; y < gridRes; y++) {
 
-        square(gridStartX + (i * tileSize), gridStartY + (y * tileSize), tileSize);
+        for (let x = 0; x < gridRes; x++) {
+
+          //console.log(gridTileStates);
+
+          if (gridTileStates[y][x] == 1) {
+
+            noFill();
+            square(gridStartX + (x * tileSize), gridStartY + (y * tileSize), tileSize);
+
+          } else {
+
+            //fill(50);
+            //square(gridStartX + (x * tileSize), gridStartY + (y * tileSize), tileSize);
+          }
+        }
       }
+
+
+      // Draw target numbers
+
+        textAlign(CENTER, CENTER);
+        textSize(36);
+        fill(255);
+        noStroke();
+
+      for (let i = 0; i < targets.length; i++) {
+
+        fill(255);
+        if (targets[i][3]) { fill(0, 255, 0); }
+
+        text(targets[i][2], gridStartX + (targets[i][0] * tileSize) + (tileSize / 2), gridStartY + (targets[i][1] * tileSize) + (tileSize / 2));
+      }
+
+
+      // Draw cube num
+
+      fill(0);
+      text(cubeTopNum, gridStartX + (playerPos[0] * tileSize) + (tileSize / 2), gridStartY + (playerPos[1] * tileSize) + (tileSize / 2));
     }
-
-
-    // Draw target numbers
-
-      textAlign(CENTER, CENTER);
-      textSize(36);
-      fill(255);
-      noStroke();
-
-    for (let i = 0; i < targets.length; i++) {
-
-      fill(255);
-      if (targets[i][3]) { fill(0, 255, 0); }
-
-      text(targets[i][2], gridStartX + (targets[i][0] * tileSize) + (tileSize / 2), gridStartY + (targets[i][1] * tileSize) + (tileSize / 2));
-    }
-
-
-    // Draw cube num
-
-    fill(0);
-    text(cubeTopNum, gridStartX + (playerPos[0] * tileSize) + (tileSize / 2), gridStartY + (playerPos[1] * tileSize) + (tileSize / 2));
   }
 }
 
@@ -278,8 +301,6 @@ function openLevel(num) {
 
   level = num;
 
-  playerPos
-
   targets = levelData[level - 1][0].slice();
 
   for (let i = 0; i < targets.length; i++) {
@@ -290,6 +311,21 @@ function openLevel(num) {
   moves = levelData[level - 1][1];
   gridRes = levelData[level - 1][2];
   tileSize = playAreaSize / gridRes;
+
+  // Set grid tile states
+
+  //gridTileStates.length = 0;
+  gridTileStates = levelData[level - 1][3];
+
+  /*for (let y = 0; y < levelData[level - 1][2]; y++) {
+
+    gridTileStates.push([]);
+
+    for (let x = 0; x < levelData[level - 1][2]; x++) {
+
+      gridTileStates[x].push(levelData[level - 1][3][y][x]);
+    }
+  }*/
 
   // Defaults
 
