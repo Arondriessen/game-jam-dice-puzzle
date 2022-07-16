@@ -12,6 +12,7 @@ playerPos = [0, 0];
 mousePos = [0, 0];
 prevMousePos = [0, 0];
 canMove = 0;
+playerOnTarget = -1;
 onTarget = 0;
 selectedTarget = 0;
 gridTileStates = [];
@@ -41,7 +42,7 @@ function setup() {
   // Canvas Setup
 
   var parentDiv = document.getElementById('game-wrap');
-  var myCanvas = createCanvas(windowWidth - 10, windowHeight - 10);
+  var myCanvas = createCanvas(windowWidth - 5, windowHeight - 5);
   myCanvas.parent("game-wrap");
 
   // Basic Game Setup
@@ -124,7 +125,8 @@ function setup() {
     }
 
     updateUnlockedLevel();
-    updatePreviewCube();
+
+    c1 = color('#BA9790');
 
     loaded = 1;
     openLevel(level);
@@ -138,7 +140,7 @@ function setup() {
 
 function windowResized() {
 
-  resizeCanvas(windowWidth - 10, windowHeight - 10);
+  resizeCanvas(windowWidth - 5, windowHeight - 5);
 
   playAreaSize = min(width, height) - 300;
   playAreaStartX = ((width - playAreaSize) / 2) - 200;
@@ -163,7 +165,7 @@ function draw() {
 
     if (gameState) {
 
-      background(0);
+      background(c1);
 
 
       // Update mouse pos
@@ -260,21 +262,39 @@ function draw() {
       // Draw Grid Square Background
 
       fill(0);
-      square(gridStartX, gridStartY, playAreaSize);
+      //square(gridStartX, gridStartY, playAreaSize);
 
 
       // Draw mouse pos
 
       if (gridTileStates[mousePos[1]][mousePos[0]]) {
 
-        fill(255, 0, 0);
-        if (canMove == 1) { fill(0, 255, 0); }
-        noStroke();
-        square(gridStartX + (mousePos[0] * tileSize), gridStartY + (mousePos[1] * tileSize), tileSize);
+        if (canMove == 1) {
+
+          fill(0, 30);
+          square(gridStartX + (mousePos[0] * tileSize), gridStartY + (mousePos[1] * tileSize), tileSize);
+
+        } else {
+
+          //if (onTarget) {
+
+            noFill();
+            stroke(color('#a88882'));
+            strokeWeight(10);
+
+            let xx = gridStartX + (mousePos[0] * tileSize);
+            let yy = gridStartY + (mousePos[1] * tileSize);
+            let off = tileSize / 4;
+            let len = tileSize - (off * 2);
+
+            line(xx + off, yy + off, xx + off + len, yy + off + len);
+            line(xx + off + len, yy + off, xx + off, yy + off + len);
+          //}
+        }
       }
 
 
-      // Draw Player
+      // Draw Player Square
 
       fill(255);
       noStroke();
@@ -284,7 +304,7 @@ function draw() {
       // Draw Grid Tiles
 
       noFill();
-      stroke(255);
+      stroke(color('#cfb6b2'));
       strokeWeight(4);
 
       for (let y = 0; y < gridRes[1]; y++) {
@@ -307,11 +327,15 @@ function draw() {
       }
 
 
-      // Draw cube num
+      // Draw player dice num
 
-      fill(0);
-      //text(cubeTopNum, gridStartX + (playerPos[0] * tileSize) + (tileSize / 2), gridStartY + (playerPos[1] * tileSize) + (tileSize / 2));
-      drawDiceFace(cubeTopNum, gridStartX + (playerPos[0] * tileSize) + (tileSize / 2), gridStartY + (playerPos[1] * tileSize) + (tileSize / 2), tileSize, 0);
+      if (playerOnTarget == -1) {
+
+        fill(0);
+        noStroke();
+        //text(cubeTopNum, gridStartX + (playerPos[0] * tileSize) + (tileSize / 2), gridStartY + (playerPos[1] * tileSize) + (tileSize / 2));
+        drawDiceFace(cubeTopNum, gridStartX + (playerPos[0] * tileSize) + (tileSize / 2), gridStartY + (playerPos[1] * tileSize) + (tileSize / 2), tileSize, 0);
+      }
 
 
       // Draw target numbers
@@ -324,7 +348,7 @@ function draw() {
       for (let i = 0; i < targets.length; i++) {
 
         fill(255);
-        if (targets[i][3]) { fill(0, 255, 0); }
+        if (playerOnTarget == i) { fill(c1); }
         drawDiceFace(targets[i][2], gridStartX + (targets[i][0] * tileSize) + (tileSize / 2), gridStartY + (targets[i][1] * tileSize) + (tileSize / 2), tileSize, 1);
       }
     }
@@ -347,6 +371,8 @@ function mouseClicked() {
     playerPos[1] = mousePos[1];
     moves--;
 
+    playerOnTarget = -1;
+
     updateMovesText();
     updatePreviewCube();
 
@@ -361,6 +387,7 @@ function mouseClicked() {
         // Set target to solved
 
         targets[selectedTarget][3] = 1;
+        playerOnTarget = selectedTarget;
 
         // Check level progress
 
@@ -421,6 +448,7 @@ function openLevel(num) {
   mousePos = [0, 0];
   prevMousePos = [0, 0];
   canMove = 0;
+  playerOnTarget = -1;
   onTarget = 0;
   selectedTarget = 0;
   levelSolved = 0;
@@ -434,6 +462,7 @@ function openLevel(num) {
   cubeFrontNum = 5;
 
   updateMovesText();
+  updatePreviewCube();
 }
 
 
@@ -483,18 +512,7 @@ function rollTempCube(dir, num) {
 
 
 
-function drawDiceFace(face, x, y, size, outline) {
-
-  //fill(0);
-  //noStroke();
-
-  if (outline) {
-
-    //fill(255);
-    //noFill();
-    //stroke(255);
-    //strokeWeight(4);
-  }
+function drawDiceFace(face, x, y, size) {
 
   let cX = x;
   let cY = y;
