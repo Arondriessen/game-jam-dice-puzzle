@@ -6,7 +6,7 @@ gameState = 0;
 loaded = 0;
 
 level = 1;
-unlockedLevel = 5;
+unlockedLevel = 1;
 
 playerPos = [0, 0];
 mousePos = [0, 0];
@@ -39,6 +39,9 @@ levelData = [];
 var soundtrack;
 var buttonSound;
 var wrongMoveSound;
+var levelCompleteSound;
+var moveSound;
+var soundtrack2;
 
 
 document.addEventListener('contextmenu', event => event.preventDefault());
@@ -103,33 +106,32 @@ window.onload = (event) => {
   document.getElementById('sound-toggle').addEventListener("click", event => {
 
     soundOn = !soundOn;
-    let tempTxt = "";
-    if (soundOn) {
+    storeItem('soundOn', soundOn);
 
-      soundtrack.mute(false);
-      soundtrack2.mute(false);
-      buttonSound.mute(false);
-      levelCompleteSound.mute(false);
-      moveSound.mute(false);
-      wrongMoveSound.mute(false);
-      tempTxt = "On";
-
-    } else {
-
-      soundtrack.mute(true);
-      soundtrack2.mute(true);
-      buttonSound.mute(true);
-      levelCompleteSound.mute(true);
-      moveSound.mute(true);
-      wrongMoveSound.mute(true);
-      tempTxt = "Off";
-    }
-    document.getElementById('sound-toggle-text').innerHTML = tempTxt;
+    updateSound();
   });
+
+  updateSound(); // delayed after setup
 };
 
 
 function setup() {
+
+  // Load progression data
+
+  level = max(1, getItem('level'));
+  unlockedLevel = max(1, getItem('unlockedLevel'));
+  //console.log(level);
+  //console.log(unlockedLevel);
+
+  soundOn = max(0, getItem('soundOn'));
+  console.log(soundOn);
+
+  //updateSound();
+
+  /*let tempItem = max(0, getItem('testItem')) + 1;
+  storeItem('testItem', tempItem);
+  console.log(tempItem);*/
 
   // Canvas Setup
 
@@ -542,6 +544,8 @@ function mouseClicked() {
 
               nextLevelButton.style.visibility = 'visible';
               unlockedLevel = (level + 1);
+              storeItem('level', level + 1);
+              storeItem('unlockedLevel', unlockedLevel);
               updateUnlockedLevel();
             }
           }
@@ -564,6 +568,7 @@ function mouseClicked() {
 function openLevel(num) {
 
   level = num;
+  storeItem('level', level);
 
   playerPos = levelData[level - 1][4].slice();
   targets = levelData[level - 1][0].slice();
@@ -775,6 +780,35 @@ function updateUnlockedLevel() {
 
     levelButtons[i].style.visibility = "visible";
   }
+}
+
+
+
+function updateSound() {
+
+  let tempTxt = "";
+  if (soundOn) {
+
+    soundtrack.mute(false);
+    soundtrack2.mute(false);
+    buttonSound.mute(false);
+    levelCompleteSound.mute(false);
+    moveSound.mute(false);
+    wrongMoveSound.mute(false);
+    tempTxt = "On";
+
+  } else {
+
+    soundtrack.mute(true);
+    soundtrack2.mute(true);
+    buttonSound.mute(true);
+    levelCompleteSound.mute(true);
+    moveSound.mute(true);
+    wrongMoveSound.mute(true);
+    tempTxt = "Off";
+  }
+
+  document.getElementById('sound-toggle-text').innerHTML = tempTxt;
 }
 
 

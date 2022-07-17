@@ -5,6 +5,20 @@ levels = [ // Levels
   [ // Level 1
     [ // Targets
       // grid x, grid y, number to land on, state (not-solved, solved)
+      [1, 1, 2, 0]
+    ],
+    2, // Number of moves
+    [2, 2], // Grid Resolution
+    [ // Grid tile states (enabled/disabled for level)
+      [1, 1],
+      [1, 1]
+    ],
+    [0, 0] // Start position
+  ],
+
+  [ // Level 2
+    [ // Targets
+      // grid x, grid y, number to land on, state (not-solved, solved)
       [3, 1, 5, 0]
     ],
     4, // Number of moves
@@ -17,7 +31,7 @@ levels = [ // Levels
     [0, 0] // Start position
   ],
 
-  [ // Level 2
+  [ // Level 3
     [ // Targets
       // grid x, grid y, number to land on, state (not-solved, solved)
       [3, 0, 6, 0],
@@ -33,7 +47,7 @@ levels = [ // Levels
     [0, 0] // Start position
   ],
 
-  [ // Level 3
+  [ // Level 4
     [ // Targets
       // grid x, grid y, number to land on, state (not-solved, solved)
       [3, 1, 1, 0],
@@ -49,7 +63,7 @@ levels = [ // Levels
     [0, 0] // Start position
   ],
 
-  [ // Level 4
+  [ // Level 5
     [ // Targets
       // grid x, grid y, number to land on, state (not-solved, solved)
       [2, 2, 6, 0],
@@ -68,7 +82,7 @@ levels = [ // Levels
     [0, 3] // Start position
   ],
 
-  [ // Level 5
+  [ // Level 6
     [ // Targets
       // grid x, grid y, number to land on, state (not-solved, solved)
       [2, 0, 5, 0],
