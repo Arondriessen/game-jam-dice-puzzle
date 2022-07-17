@@ -69,10 +69,10 @@ window.onload = (event) => {
   });
 
   levelCompleteSound = new Howl({
-    src: ['level-complete.wav'],
+    src: ['sip-coffee.wav'],
     autoplay: false,
     loop: false,
-    volume: 0.4,
+    volume: 5,
   });
 
   moveSound = new Howl({
@@ -87,6 +87,13 @@ window.onload = (event) => {
     autoplay: false,
     loop: false,
     volume: 0.4,
+  });
+
+  coffeePouringSound = new Howl({
+    src: ['coffee-pour-2.wav'],
+    autoplay: false,
+    loop: false,
+    volume: 0.5,
   });
 
   // Attach sound to all buttons
@@ -121,17 +128,11 @@ function setup() {
 
   level = max(1, getItem('level'));
   unlockedLevel = max(1, getItem('unlockedLevel'));
-  //console.log(level);
-  //console.log(unlockedLevel);
-
   soundOn = max(0, getItem('soundOn'));
-  console.log(soundOn);
 
-  //updateSound();
+  // Unlock everything for testing purposes
 
-  /*let tempItem = max(0, getItem('testItem')) + 1;
-  storeItem('testItem', tempItem);
-  console.log(tempItem);*/
+  //unlockedLevel = 1;
 
   // Canvas Setup
 
@@ -212,11 +213,13 @@ function setup() {
 
     for (let i = 0; i < levelButtons.length; i++) {
 
+      let numLen = 1;
+      if (i > 8) { numLen = 2; }
       levelButtons[i].style.visibility = 'hidden';
       levelButtons[i].addEventListener("click", event => {
 
         gameState = 1;
-        let fuckoff = levelButtons[i].id.substr(this.id.length - 1);
+        let fuckoff = levelButtons[i].id.substr(this.id.length - numLen);
         openLevel(parseInt(fuckoff));
       });
     }
@@ -226,7 +229,7 @@ function setup() {
     c1 = color('#BA9790');
 
     loaded = 1;
-    openLevel(level);
+    //openLevel(level);
   }
 
   script.src = 'levels.js';
@@ -570,6 +573,8 @@ function openLevel(num) {
   level = num;
   storeItem('level', level);
 
+  coffeePouringSound.play();
+
   playerPos = levelData[level - 1][4].slice();
   targets = levelData[level - 1][0].slice();
 
@@ -795,6 +800,7 @@ function updateSound() {
     levelCompleteSound.mute(false);
     moveSound.mute(false);
     wrongMoveSound.mute(false);
+    coffeePouringSound.mute(false);
     tempTxt = "On";
 
   } else {
@@ -805,6 +811,7 @@ function updateSound() {
     levelCompleteSound.mute(true);
     moveSound.mute(true);
     wrongMoveSound.mute(true);
+    coffeePouringSound.mute(true);
     tempTxt = "Off";
   }
 

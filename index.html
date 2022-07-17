@@ -1,5 +1,5 @@
 <!DOCTYPE html><!--  This site was created in Webflow. https://www.webflow.com  -->
-<!--  Last Published: Sun Jul 17 2022 15:09:27 GMT+0000 (Coordinated Universal Time)  -->
+<!--  Last Published: Sun Jul 17 2022 18:27:29 GMT+0000 (Coordinated Universal Time)  -->
 <html data-wf-page="62d2ae8eaa648f4e46ff460c" data-wf-site="62d2ae8eaa648f9b9cff460b">
 <head>
   <meta charset="utf-8">
@@ -21,9 +21,10 @@
     <div class="main-menu">
       <div class="container">
         <div class="hero-wrap">
-          <h1 class="h1 coffee-font">Coffeeshop Dice</h1>
+          <h1 class="h1 coffee-font">dice flip cafe</h1>
           <h1 class="h2">made for the <a href="https://itch.io/jam/gmtk-jam-2022" target="_blank" class="gamejam-link">GMTK Game Jam 2022</a>
           </h1>
+          <p class="paragraph made-by">made by Áron Driessen &amp; Alex Suki</p>
           <div class="menu-buttons-wrap">
             <div class="menu-buttons-sub-wrap">
               <div id="play-button" data-w-id="dac73d7a-ec61-47cb-c0fd-75bfc959bc06" class="menu-button">
@@ -103,7 +104,7 @@
     <div id="game-wrap" class="game-wrap">
       <div class="sidebar-wrap">
         <div class="_3d-wrap">
-          <p class="paragraph">Hover to rotate</p>
+          <p class="paragraph centered">Hover to rotate</p>
           <div data-w-id="30e8aab3-a529-2e42-d95b-8f0febcadfcf" class="_3d-parent">
             <div class="_3d-cube">
               <div id="bottom-face" class="_3d-cube-side bottom"><img src="images/face-1.svg" loading="lazy" alt="" class="dice-face-img face-1"><img src="images/face-2.svg" loading="lazy" alt="" class="dice-face-img face-2"><img src="images/face-3.svg" loading="lazy" alt="" class="dice-face-img face-3"><img src="images/face-4.svg" loading="lazy" alt="" class="dice-face-img face-4"><img src="images/face-5.svg" loading="lazy" alt="" class="dice-face-img face-5"><img src="images/face-6.svg" loading="lazy" alt="" class="dice-face-img face-6"></div>
@@ -122,21 +123,22 @@
         </div>
       </div>
       <div class="top-bar-wrap">
-        <div class="top-bar-button-wrap left-side">
+        <div class="top-bar-side-wrap">
           <div id="back-to-menu-button" data-w-id="c158a9de-52b0-7148-137f-b31b7b0771e0" class="menu-button">
             <div>Menu</div>
           </div>
-        </div>
-        <div class="top-bar-item no-left-m">
-          <div>Level <span id="level-text">1</span></div>
+          <div class="top-bar-item no-left-m">
+            <div>Level <span id="level-text">1</span></div>
+          </div>
         </div>
         <div class="top-bar-item targets">
-          <div class="text-block"><span id="targets-done-text">0</span> / <span id="targets-text">0</span></div>
+          <div class="targets-bg"></div>
+          <div class="targets-text-rel"><span id="targets-done-text">0</span> / <span id="targets-text">0</span></div>
         </div>
-        <div class="top-bar-item no-right-m">
-          <div>Moves Left: <span id="moves-left-text">0</span></div>
-        </div>
-        <div class="top-bar-button-wrap right-side">
+        <div class="top-bar-side-wrap">
+          <div class="top-bar-item no-right-m">
+            <div>Moves Left: <span id="moves-left-text">0</span></div>
+          </div>
           <div id="restart-button" class="menu-button">
             <div>Restart</div>
           </div>
@@ -148,7 +150,7 @@
         <div class="hero-wrap">
           <h1 class="h1 coffee-font">How To</h1>
           <div class="div-block">
-            <p class="paragraph">1: Move the dice by clicking on adjacent tiles.<br><br>2: Using the 3D dice preview on the right<br>to plan your upcoming moves.<br><br>3: Land on each target square so that the number<br>matches the top number on your dice.</p>
+            <p class="paragraph">1: Move the dice by clicking on adjacent tiles.<br><br>2: Use the 3D dice preview on the right<br>to plan your upcoming moves.<br><br>3: Land on each target square so that the number<br>matches the top number on your dice.</p>
             <p class="paragraph made-by">made by Áron Driessen &amp; Alex Suki</p>
           </div>
         </div>
