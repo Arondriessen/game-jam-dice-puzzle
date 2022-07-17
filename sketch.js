@@ -313,7 +313,7 @@ function draw() {
 
           fill(255, targetAnimOp / 2);
           noStroke();
-          let s = tileSize + (tileSize * ((100 - targetAnimOp) / 100));
+          let s = tileSize + (tileSize * ((100 - targetAnimOp) / 150));
           let fadeRate = 3;
           targetAnimOp -= fadeRate;
           if (targetAnimOp < 0) { targetAnimOp = 0; targetAnim = 0; }
