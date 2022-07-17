@@ -33,8 +33,68 @@ moveDist = 0;
 
 levelData = [];
 
+var soundtrack;
+var buttonSound;
+var wrongMoveSound;
+
 
 document.addEventListener('contextmenu', event => event.preventDefault());
+
+window.onload = (event) => {
+  soundtrack = new Howl({
+    src: ['soundtrack-1.mp3'],
+    autoplay: true,
+    loop: true,
+    volume: 0.4,
+  });
+
+  soundtrack2 = new Howl({
+    src: ['soundtrack-2.wav'],
+    autoplay: true,
+    loop: true,
+    volume: 0.3,
+  });
+
+  buttonSound = new Howl({
+    src: ['button-click-2.mp3'],
+    autoplay: false,
+    loop: false,
+    volume: 0.4,
+  });
+
+  levelCompleteSound = new Howl({
+    src: ['level-complete.wav'],
+    autoplay: false,
+    loop: false,
+    volume: 0.4,
+  });
+
+  moveSound = new Howl({
+    src: ['button-click-1.mp3'],
+    autoplay: false,
+    loop: false,
+    volume: 0.3,
+  });
+
+  wrongMoveSound = new Howl({
+    src: ['wrong-move-1.mp3'],
+    autoplay: false,
+    loop: false,
+    volume: 0.4,
+  });
+
+  // Attach sound to all buttons
+
+  allButtons = document.getElementsByClassName("menu-button");
+
+  for (let i = 0; i < allButtons.length; i++) {
+
+    allButtons[i].addEventListener("click", event => {
+
+      buttonSound.play();
+    });
+  }
+};
 
 
 function setup() {
@@ -174,6 +234,8 @@ function draw() {
 
       // Update mouse pos
 
+      outOfBounds = 1;
+
       if (mouseX > gridStartX) {
 
         if (mouseX < (gridStartX + (gridRes[0] * tileSize))) {
@@ -182,10 +244,20 @@ function draw() {
 
             if (mouseY < (gridStartY + (gridRes[1] * tileSize))) {
 
-              prevMousePos[0] = mousePos[0];
-              prevMousePos[1] = mousePos[1];
-              mousePos[0] = floor((mouseX - gridStartX) / tileSize);
-              mousePos[1] = floor((mouseY - gridStartY) / tileSize);
+              let newPosX = floor((mouseX - gridStartX) / tileSize);
+              let newPosY = floor((mouseY - gridStartY) / tileSize);
+
+              // Check if we're on an enabled tile
+
+              if (levelData[level - 1][3][newPosY][newPosX]) {
+
+                outOfBounds = 0;
+
+                prevMousePos[0] = mousePos[0];
+                prevMousePos[1] = mousePos[1];
+                mousePos[0] = newPosX;
+                mousePos[1] = newPosY;
+              }
             }
           }
         }
@@ -382,63 +454,76 @@ function draw() {
 
 function mouseClicked() {
 
-  if (canMove) {
+  if (outOfBounds == 0) {
 
-    // Calculate move
+    if (canMove) {
 
-    rollCube(moveDir, moveDist);
+      // Calculate move
 
-    // Move player
+      rollCube(moveDir, moveDist);
 
-    playerPos[0] = mousePos[0];
-    playerPos[1] = mousePos[1];
-    moves--;
+      // Move player
 
-    playerOnTarget = -1;
+      playerPos[0] = mousePos[0];
+      playerPos[1] = mousePos[1];
+      moves--;
 
-    updateMovesText();
-    updatePreviewCube();
+      moveSound.play();
 
-    // If moving to target, set target to solved
+      playerOnTarget = -1;
 
-    if (onTarget) {
+      updateMovesText();
+      updatePreviewCube();
 
-      // Check if not already solved
+      // If moving to target, set target to solved
 
-      if (targets[selectedTarget][3] == 0) {
+      if (onTarget) {
 
-        // Set target to solved
+        // Check if not already solved
 
-        targets[selectedTarget][3] = 1;
-        playerOnTarget = selectedTarget;
-        targetAnim = 1;
-        targetAnimOp = 100;
+        if (targets[selectedTarget][3] == 0) {
 
-        // Check level progress
+          // Set target to solved
 
-        targetsSolved++;
+          targets[selectedTarget][3] = 1;
+          playerOnTarget = selectedTarget;
+          targetAnim = 1;
+          targetAnimOp = 100;
 
-        updateMovesText();
+          //levelCompleteSound.play();
 
-        if (targetsSolved == targets.length) {
+          // Check level progress
 
-          // Level is solved
+          targetsSolved++;
 
-          // Set next level button to visible
+          updateMovesText();
 
-          if ((level + 1) <= levelData.length) {
+          if (targetsSolved == targets.length) {
 
-            nextLevelButton.style.visibility = 'visible';
-            unlockedLevel = (level + 1);
-            updateUnlockedLevel();
+            // Level is solved
+
+            levelCompleteSound.play();
+
+            // Set next level button to visible
+
+            if ((level + 1) <= levelData.length) {
+
+              nextLevelButton.style.visibility = 'visible';
+              unlockedLevel = (level + 1);
+              updateUnlockedLevel();
+            }
           }
         }
       }
+
+      // Set "canmove" to off after moving to tile
+
+      canMove = 0;
+
+    } else {
+
+      wrongMoveSound.play();
     }
-
-    // Set "canmove" to off after moving to tile
-
-    canMove = 0;
   }
 }
 
