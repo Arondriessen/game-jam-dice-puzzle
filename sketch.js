@@ -19,6 +19,7 @@ gridTileStates = [];
 levelSolved = 0;
 targetsSolved = 0;
 moves = 0;
+outOfBounds = 1;
 
 
 cubeTopNum = 1;
@@ -30,6 +31,8 @@ cubeFrontNum = 5;
 
 moveDir = 0;
 moveDist = 0;
+
+soundOn = 1;
 
 levelData = [];
 
@@ -94,6 +97,35 @@ window.onload = (event) => {
       buttonSound.play();
     });
   }
+
+  // Attach function to sound toggle button
+
+  document.getElementById('sound-toggle').addEventListener("click", event => {
+
+    soundOn = !soundOn;
+    let tempTxt = "";
+    if (soundOn) {
+
+      soundtrack.mute(false);
+      soundtrack2.mute(false);
+      buttonSound.mute(false);
+      levelCompleteSound.mute(false);
+      moveSound.mute(false);
+      wrongMoveSound.mute(false);
+      tempTxt = "On";
+
+    } else {
+
+      soundtrack.mute(true);
+      soundtrack2.mute(true);
+      buttonSound.mute(true);
+      levelCompleteSound.mute(true);
+      moveSound.mute(true);
+      wrongMoveSound.mute(true);
+      tempTxt = "Off";
+    }
+    document.getElementById('sound-toggle-text').innerHTML = tempTxt;
+  });
 };
 
 
