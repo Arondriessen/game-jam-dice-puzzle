@@ -132,7 +132,7 @@ function setup() {
 
   // Unlock everything for testing purposes
 
-  unlockedLevel = 10;
+  //unlockedLevel = 1;
 
   // Canvas Setup
 
