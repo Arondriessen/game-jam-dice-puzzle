@@ -280,7 +280,7 @@ function draw() {
 
             noFill();
             stroke(color('#a88882'));
-            strokeWeight(10);
+            strokeWeight(tileSize / 20);
 
             let xx = gridStartX + (mousePos[0] * tileSize);
             let yy = gridStartY + (mousePos[1] * tileSize);
@@ -595,8 +595,6 @@ function updatePreviewCube() {
 
     for (let y = 0; y < 6; y++) {
 
-      console.log(i + " - " + y);
-      console.log(faceChildren[y]);
       faceChildren[y].style.visibility = 'hidden';
     }
 
@@ -610,12 +608,12 @@ function updateMovesText() {
 
   // Update uw numbers
 
-  uwTop.innerHTML = cubeTopNum;
+  /*uwTop.innerHTML = cubeTopNum;
   uwBottom.innerHTML = cubeBottomNum;
   uwBack.innerHTML = cubeBackNum;
   uwFront.innerHTML = cubeFrontNum;
   uwLeft.innerHTML = cubeLeftNum;
-  uwRight.innerHTML = cubeRightNum;
+  uwRight.innerHTML = cubeRightNum;*/
 
   levelText.innerHTML = level;
   movesText.innerHTML = moves;
