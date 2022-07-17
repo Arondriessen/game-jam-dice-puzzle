@@ -74,6 +74,8 @@ function setup() {
 
     levelText = document.getElementById('level-text');
     movesText = document.getElementById('moves-left-text');
+    targetsDoneText = document.getElementById('targets-done-text');
+    totalTargets = document.getElementById('targets-text');
 
     // Attach level open function to play button
 
@@ -397,6 +399,8 @@ function mouseClicked() {
 
         targetsSolved++;
 
+        updateMovesText();
+
         if (targetsSolved == targets.length) {
 
           // Level is solved
@@ -621,6 +625,8 @@ function updateMovesText() {
 
   levelText.innerHTML = level;
   movesText.innerHTML = moves;
+  targetsDoneText.innerHTML = targetsSolved;
+  totalTargets.innerHTML = targets.length;
 }
 
 
