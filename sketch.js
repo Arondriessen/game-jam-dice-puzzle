@@ -49,7 +49,7 @@ function setup() {
 
   playAreaSize = min(width, height) - 300;
   playAreaStartX = ((width - playAreaSize) / 2) - 200;
-  playAreaStartY = ((height - playAreaSize) / 2) + 60;
+  playAreaStartY = ((height - playAreaSize) / 2);
 
 
   // Load level data from js file
@@ -144,7 +144,7 @@ function windowResized() {
 
   playAreaSize = min(width, height) - 300;
   playAreaStartX = ((width - playAreaSize) / 2) - 200;
-  playAreaStartY = ((height - playAreaSize) / 2) + 60;
+  playAreaStartY = ((height - playAreaSize) / 2) ;
 
   if (gameState) {
 
@@ -348,7 +348,7 @@ function draw() {
       for (let i = 0; i < targets.length; i++) {
 
         fill(255);
-        if (playerOnTarget == i) { fill(c1); }
+        if (playerOnTarget == i) { fill(0); }
         drawDiceFace(targets[i][2], gridStartX + (targets[i][0] * tileSize) + (tileSize / 2), gridStartY + (targets[i][1] * tileSize) + (tileSize / 2), tileSize, 1);
       }
     }
@@ -517,8 +517,8 @@ function drawDiceFace(face, x, y, size) {
   let cX = x;
   let cY = y;
 
-  let cS = max(14, size / 12);
-  let cOff = size / 4.2;
+  let cS = size / 8;
+  let cOff = size / 3.5;
 
   switch(face) {
 
