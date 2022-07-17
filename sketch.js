@@ -800,6 +800,7 @@ function updateSound() {
     levelCompleteSound.mute(false);
     moveSound.mute(false);
     wrongMoveSound.mute(false);
+    coffeePouringSound.mute(false);
     tempTxt = "On";
 
   } else {
@@ -810,6 +811,7 @@ function updateSound() {
     levelCompleteSound.mute(true);
     moveSound.mute(true);
     wrongMoveSound.mute(true);
+    coffeePouringSound.mute(false);
     tempTxt = "Off";
   }
 
