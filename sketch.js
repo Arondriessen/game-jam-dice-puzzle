@@ -305,6 +305,23 @@ function draw() {
       square(gridStartX + (playerPos[0] * tileSize), gridStartY + (playerPos[1] * tileSize), tileSize);
 
 
+      // Draw target done animation
+
+      if (playerOnTarget > -1) {
+
+        if (targetAnim) {
+
+          fill(255, targetAnimOp / 2);
+          noStroke();
+          let s = tileSize + (tileSize * ((100 - targetAnimOp) / 100));
+          let fadeRate = 3;
+          targetAnimOp -= fadeRate;
+          if (targetAnimOp < 0) { targetAnimOp = 0; targetAnim = 0; }
+          square(gridStartX + (targets[playerOnTarget][0] * tileSize) - ((s - tileSize) / 2), gridStartY + (targets[playerOnTarget][1] * tileSize) - ((s - tileSize) / 2), s);
+        }
+      }
+
+
       // Draw Grid Tiles
 
       noFill();
@@ -394,6 +411,8 @@ function mouseClicked() {
 
         targets[selectedTarget][3] = 1;
         playerOnTarget = selectedTarget;
+        targetAnim = 1;
+        targetAnimOp = 100;
 
         // Check level progress
 
@@ -461,6 +480,8 @@ function openLevel(num) {
   selectedTarget = 0;
   levelSolved = 0;
   targetsSolved = 0;
+  targetAnimOp = 100;
+  targetAnim = 0;
 
   cubeTopNum = 1;
   cubeBottomNum = 6;
