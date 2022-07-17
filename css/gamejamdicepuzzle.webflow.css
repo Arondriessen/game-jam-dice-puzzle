@@ -309,10 +309,10 @@
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-  height: 120%;
+  height: 110%;
   margin-top: 0px;
-  padding-right: 50px;
-  padding-left: 50px;
+  padding-right: 40px;
+  padding-left: 40px;
   -webkit-box-align: center;
   -webkit-align-items: center;
   -ms-flex-align: center;
@@ -322,8 +322,8 @@
   align-self: flex-start;
   border-top-left-radius: 0px;
   border-top-right-radius: 0px;
-  font-size: 48px;
-  line-height: 48px;
+  font-size: 46px;
+  line-height: 46px;
 }
 
 ._3d-parent {
