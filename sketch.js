@@ -150,7 +150,7 @@ function windowResized() {
 
   if (gameState) {
 
-    tileSize = min(min(min(playAreaW / gridRes[0], playAreaH / gridRes[1]), min(playAreaW, playAreaH) / 5), 160);
+    tileSize = min(min(min(playAreaW / gridRes[0], playAreaH / gridRes[1]), min(playAreaW, playAreaH) / 5), 200);
 
     gridStartX = playAreaStartX + ((playAreaW - ((gridRes[0]) * tileSize)) / 2);
     gridStartY = playAreaStartY + ((playAreaH - ((gridRes[1]) * tileSize)) / 2);
@@ -438,7 +438,7 @@ function openLevel(num) {
 
   gridResMax = max(gridRes[0], gridRes[1]);
 
-  tileSize = min(min(min(playAreaW / gridRes[0], playAreaH / gridRes[1]), min(playAreaW, playAreaH) / 5), 160);
+  tileSize = min(min(min(playAreaW / gridRes[0], playAreaH / gridRes[1]), min(playAreaW, playAreaH) / 5), 200);
 
   gridStartX = playAreaStartX + ((playAreaW - ((gridRes[0]) * tileSize)) / 2);
   gridStartY = playAreaStartY + ((playAreaH - ((gridRes[1]) * tileSize)) / 2);
