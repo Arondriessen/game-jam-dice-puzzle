@@ -229,7 +229,7 @@ function setup() {
     c1 = color('#BA9790');
 
     loaded = 1;
-    openLevel(level);
+    //openLevel(level);
   }
 
   script.src = 'levels.js';
@@ -811,7 +811,7 @@ function updateSound() {
     levelCompleteSound.mute(true);
     moveSound.mute(true);
     wrongMoveSound.mute(true);
-    coffeePouringSound.mute(false);
+    coffeePouringSound.mute(true);
     tempTxt = "Off";
   }
 
