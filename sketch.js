@@ -6,7 +6,7 @@ gameState = 0;
 loaded = 0;
 
 level = 1;
-unlockedLevel = 4;
+unlockedLevel = 5;
 
 playerPos = [0, 0];
 mousePos = [0, 0];
@@ -47,9 +47,10 @@ function setup() {
 
   // Basic Game Setup
 
-  playAreaSize = min(width, height) - 300;
-  playAreaStartX = ((width - playAreaSize) / 2) - 200;
-  playAreaStartY = ((height - playAreaSize) / 2);
+  playAreaW = width - 700;
+  playAreaH = height - 400;
+  playAreaStartX = ((width - playAreaW) / 2) - 240;
+  playAreaStartY = ((height - playAreaH) / 2);
 
 
   // Load level data from js file
@@ -142,16 +143,17 @@ function windowResized() {
 
   resizeCanvas(windowWidth - 5, windowHeight - 5);
 
-  playAreaSize = min(width, height) - 300;
-  playAreaStartX = ((width - playAreaSize) / 2) - 200;
-  playAreaStartY = ((height - playAreaSize) / 2) ;
+  playAreaW = width - 700;
+  playAreaH = height - 400;
+  playAreaStartX = ((width - playAreaW) / 2) - 240;
+  playAreaStartY = ((height - playAreaH) / 2);
 
   if (gameState) {
 
-    tileSize = playAreaSize / gridResMax;
+    tileSize = min(min(min(playAreaW / gridRes[0], playAreaH / gridRes[1]), min(playAreaW, playAreaH) / 5), 160);
 
-    gridStartX = playAreaStartX + (((gridResMax - gridRes[0]) / 2) * tileSize);
-    gridStartY = playAreaStartY + (((gridResMax - gridRes[1]) / 2) * tileSize);
+    gridStartX = playAreaStartX + ((playAreaW - ((gridRes[0]) * tileSize)) / 2);
+    gridStartY = playAreaStartY + ((playAreaH - ((gridRes[1]) * tileSize)) / 2);
   }
 }
 
@@ -342,13 +344,15 @@ function draw() {
 
       textAlign(CENTER, CENTER);
       textSize(36);
-      fill(255);
+      noFill();
       noStroke();
 
       for (let i = 0; i < targets.length; i++) {
 
-        fill(255);
-        if (playerOnTarget == i) { fill(0); }
+        stroke(255);
+        noFill();
+        if (targets[i][3]) { fill(255); noStroke(); }
+        if (playerOnTarget == i) { fill(0); noStroke(); }
         drawDiceFace(targets[i][2], gridStartX + (targets[i][0] * tileSize) + (tileSize / 2), gridStartY + (targets[i][1] * tileSize) + (tileSize / 2), tileSize, 1);
       }
     }
@@ -434,10 +438,10 @@ function openLevel(num) {
 
   gridResMax = max(gridRes[0], gridRes[1]);
 
-  tileSize = playAreaSize / gridResMax;
+  tileSize = min(min(min(playAreaW / gridRes[0], playAreaH / gridRes[1]), min(playAreaW, playAreaH) / 5), 160);
 
-  gridStartX = playAreaStartX + (((gridResMax - gridRes[0]) / 2) * tileSize);
-  gridStartY = playAreaStartY + (((gridResMax - gridRes[1]) / 2) * tileSize);
+  gridStartX = playAreaStartX + ((playAreaW - ((gridRes[0]) * tileSize)) / 2);
+  gridStartY = playAreaStartY + ((playAreaH - ((gridRes[1]) * tileSize)) / 2);
 
   // Set grid tile states
 
