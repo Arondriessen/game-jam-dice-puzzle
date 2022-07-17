@@ -460,6 +460,7 @@
   display: -ms-flexbox;
   display: flex;
   height: 100%;
+  padding-bottom: 60px;
   -webkit-box-orient: vertical;
   -webkit-box-direction: normal;
   -webkit-flex-direction: column;
